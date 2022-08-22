@@ -78,12 +78,13 @@ def flatten_schema(dictionary, parent_key="", sep="__"):
         ]
     """
     items = []
-    for k, v in dictionary.items():
-        new_key = parent_key + sep + k if parent_key else k
-        if "type" not in v:
-            LOGGER.warning(f"SCHEMA with limitted support on field {k}: {v}")
-        if "object" in v.get("type", []):
-            items.extend(flatten_schema(v.get("properties"), new_key, sep=sep))
-        else:
-            items.append(new_key)
+    if dictionary:
+        for k, v in dictionary.items():
+            new_key = parent_key + sep + k if parent_key else k
+            if "type" not in v:
+                LOGGER.warning(f"SCHEMA with limitted support on field {k}: {v}")
+            if "object" in v.get("type", []):
+                items.extend(flatten_schema(v.get("properties"), new_key, sep=sep))
+            else:
+                items.append(new_key)
     return items
