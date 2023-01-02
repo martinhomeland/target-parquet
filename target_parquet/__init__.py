@@ -70,6 +70,7 @@ class MemoryReporter(threading.Thread):
 def persist_messages(
     messages,
     destination_path,
+    parquet_version,
     compression_method=None,
     streams_in_separate_folder=False,
     file_size=-1,
@@ -169,7 +170,7 @@ def persist_messages(
         filepath = os.path.expanduser(os.path.join(destination_path, filename))
         with open(filepath, "wb") as f:
             ParquetWriter(
-                f, dataframe.schema, compression=compression_method
+                f, dataframe.schema, compression=compression_method, version=parquet_version
             ).write_table(dataframe)
         ## explicit memory management. This can be usefull when working on very large data groups
         del dataframe
@@ -273,10 +274,11 @@ def main():
         MemoryReporter().start()
     state = persist_messages(
         input_messages,
-        config.get("destination_path", "."),
-        config.get("compression_method", None),
-        config.get("streams_in_separate_folder", False),
-        int(config.get("file_size", -1)),
+        destination_path=config.get("destination_path", "."),
+        compression_method=config.get("compression_method", None),
+        parquet_version=config.get("parquet_version", 1.0),
+        streams_in_separate_folder=config.get("streams_in_separate_folder", False),
+        file_size=int(config.get("file_size", -1)),
     )
 
     emit_state(state)
