@@ -276,7 +276,7 @@ def main():
         input_messages,
         destination_path=config.get("destination_path", "."),
         compression_method=config.get("compression_method", None),
-        parquet_version=config.get("parquet_version", 1.0),
+        parquet_version=config.get("parquet_version", "1.0"),
         streams_in_separate_folder=config.get("streams_in_separate_folder", False),
         file_size=int(config.get("file_size", -1)),
     )
