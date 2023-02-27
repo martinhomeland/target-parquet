@@ -11,8 +11,8 @@ setup(
     classifiers=["Programming Language :: Python :: 3 :: Only"],
     py_modules=["target_parquet"],
     install_requires=[
-        "jsonschema==2.6.0",
-        "singer-python==5.12.2",
+        "jsonschema==3.2.0",
+        "pipelinewise-singer-python==1.*",
         "pyarrow==10.0.1",
         "psutil==5.9.1",
     ],
